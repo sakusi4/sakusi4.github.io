@@ -281,7 +281,7 @@ compress_html:
 comments:
   provider               : "disqus"
   disqus:
-    shortname            : https-karma22-github-io # Short-name
+    shortname            : https-karma22-github-io-1 # Short-name
 
 # Defaults
 defaults:
