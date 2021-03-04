@@ -40,6 +40,11 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+google-site-verification : l4M4YPOEkMxkAJMuABUVtHdaUeAsXKiJRGR1Tkn5pDc
+bing_site_verification   :
+yandex_site_verification :
+naver_site_verification  :
+
 analytics:
   provider               : "google" # false (default), "google", "google-universal", "custom"
   google:
