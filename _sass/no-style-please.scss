@@ -60,13 +60,13 @@ hr {
 }
 
 table, th, td {
-  width: 100%;
+  width: auto;
   border: thin solid black;
   border-collapse: collapse;
   padding: 0.4rem;
 }
 
-code {
+code {  
   color: black;
   background: white;
 }
