@@ -1,3 +1,2 @@
-User-agent: *
-Allow: /
-Sitemap: https://sakusi4.github.io/sitemap.xml
+User-agent: Yeti
+Allow:/
