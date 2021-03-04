@@ -40,6 +40,12 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+analytics:
+  provider               : "google" # false (default), "google", "google-universal", "custom"
+  google:
+    tracking_id          : UA-154357445-1
+    anonymize_ip         : true # true, false (default)
+    
 comments:
   provider               : "disqus"
   disqus:
