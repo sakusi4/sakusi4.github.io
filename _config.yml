@@ -26,7 +26,7 @@ description: > # >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: empty
-github_username:  sakusi4
+github_username: sakusi4
 
 theme_config:
   appearance: "auto" # can be "light", "dark" or "auto"
