@@ -5,8 +5,7 @@ entries:
   - title: Info
     entries:
       - title: About me
-        url: about
-      - title: <a href='https://github.com/sakusi4/'>Github</a>
+        url: about      
 
   - title: C/C++
     post_list:
