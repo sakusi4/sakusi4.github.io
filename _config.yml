@@ -21,7 +21,7 @@
 # email:<a href='mailto:junpark4395@gmail.com'>junpark4395@gmail.com</a><br /> 
 title: sakusi4
 email: junpark4395@gmail.com
-description: > #>- # this means to ignore newlines until "baseurl:"  
+description: > # >- # this means to ignore newlines until "baseurl:"  
   프로그래밍은 건강에 해로워
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
@@ -39,6 +39,10 @@ theme: no-style-please
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+
+sass:
+  sass_dir: _sass
+  style: compressed  
 
 # Exclude from processing.
 # The following items will not be processed, by default.
