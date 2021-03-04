@@ -1,6 +1,6 @@
 ---
 layout: page
-title: About
+title: About me
 ---
 
 email:<a href='mailto:junpark4395@gmail.com'>junpark4395@gmail.com</a>
