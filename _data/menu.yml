@@ -15,6 +15,14 @@ entries:
       show_more_text: See more posts...
       show_more_url: c_cpp-archive.html
 
+  - title: Algorithms
+    post_list:
+      category: algorithms
+      limit: 5
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: algorithms-archive.html
+
   - title: SDN(Software Defined Networking)
     post_list:
       category: sdn
@@ -23,9 +31,9 @@ entries:
       show_more_text: See more posts...
       show_more_url: sdn-archive.html
 
-  - title: All posts
-    post_list:
-      limit: 10
-      show_more: true
-      show_more_text: Show more...
-      show_more_url: archive.html
+#  - title: All posts
+#    post_list:
+#      limit: 10
+#      show_more: true
+#      show_more_text: Show more...
+#      show_more_url: archive.html

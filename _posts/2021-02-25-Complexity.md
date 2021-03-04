@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "코드의 성능을 파악하는 방법"
-categories: Algorithm
+category: algorithms
 date: 2021-02-25
 ---
 
