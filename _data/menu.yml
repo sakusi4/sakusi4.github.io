@@ -31,6 +31,14 @@ entries:
       show_more_text: See more posts...
       show_more_url: sdn-archive.html
 
+  - title: Tips
+    post_list:
+      category: tips
+      limit: 5
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: tips-archive.html      
+
 #  - title: All posts
 #    post_list:
 #      limit: 10

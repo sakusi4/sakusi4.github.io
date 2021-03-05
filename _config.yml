@@ -19,6 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 # email:<a href='mailto:junpark4395@gmail.com'>junpark4395@gmail.com</a><br /> 
+locale: "utf8"
 title: sakusi4
 email: junpark4395@gmail.com
 description: > # >- # this means to ignore newlines until "baseurl:"  
