@@ -23,6 +23,14 @@ entries:
       show_more_text: See more posts...
       show_more_url: algorithms-archive.html
 
+  - title: QT
+    post_list:
+      category: qt
+      limit: 5
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: qt-archive.html      
+
   - title: SDN(Software Defined Networking)
     post_list:
       category: sdn
