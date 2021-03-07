@@ -36,6 +36,7 @@ theme_config:
   show_description: true # show blog description in home page
 
 # Build settings
+favicon: "logo.jpg"
 theme: no-style-please
 plugins:
   - jekyll-feed

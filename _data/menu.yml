@@ -7,6 +7,14 @@ entries:
       - title: About me
         url: about      
 
+  - title: Projects
+    post_list:
+      category: projects
+      limit: 5
+      show_more: true
+      show_more_text: See more posts...
+      show_more_url: projects-archive.html
+
   - title: C/C++
     post_list:
       category: c_cpp

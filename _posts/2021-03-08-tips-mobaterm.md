@@ -32,4 +32,3 @@ Windows Terminal
 - 최소한의 기능
 
 이 프로그램은 Microsoft Store에서 받을 수 있습니다. 우분투 데스크탑을 오래 사용한 저에게 윈도우의 커맨드창은 부족한 점이 많습니다. Windows Terminal은 zsh같은 터미널에 밀리지 않습니다. cmd, powershell, git bash 대신에 만족스럽게 사용중입니다.
-
