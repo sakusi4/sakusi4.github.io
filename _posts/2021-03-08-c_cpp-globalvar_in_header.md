@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "C/C++ 헤더 파일 중복 방지와 전역 변수"
+title: "C/C++, 헤더 파일 중복 방지와 전역 변수"
 category: c_cpp
 date: 2021-03-08
 ---
