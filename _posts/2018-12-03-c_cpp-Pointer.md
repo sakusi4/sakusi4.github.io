@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "C/C++, 포인터의 이해"
-categories: c_cpp
+category: c_cpp
 date: 2018-12-03
 ---
 본 글에서는 포인터의 기본 문법을 다루지 않습니다.
