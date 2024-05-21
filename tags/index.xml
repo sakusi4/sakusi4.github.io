@@ -10,5 +10,17 @@
 	<atom:link href="https://sakusi4.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
+    
+    <item>
+      <title>첫 글</title>
+      <link>https://sakusi4.github.io/%EC%B2%AB-%EA%B8%80/</link>
+      <pubDate>Mon, 20 May 2024 22:26:00 +0000</pubDate>
+      
+      <guid>https://sakusi4.github.io/%EC%B2%AB-%EA%B8%80/</guid>
+      <description>&lt;p&gt;가끔 심심할 때 글을 쓸 예정이다.&lt;/p&gt;
+</description>
+    </item>
+    
+    
   </channel>
 </rss>
