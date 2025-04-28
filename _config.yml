@@ -16,7 +16,7 @@ timezone: Asia/Dubai
 
 title: June
 
-tagline: 이것 저것 전부다
+tagline:
 
 description: >- # used by seo meta and the atom feed
   제가 가진 생각들을 공유하기 위해 만든 블로그 입니다.
@@ -33,7 +33,7 @@ social:
   # Change to your full name.
   # It will be displayed as the default author of the posts and the copyright owner in the Footer
   name: Jun Park
-  email: junpark4395@gmail.com# change to your email address
+  email: junpark4395@gmail.com # change to your email address
   links:
     - https://github.com/sakusi4
 
@@ -81,7 +81,7 @@ pageviews:
 #     light — Use the light color scheme
 #     dark — Use the dark color scheme
 #
-theme_mode: dark # [light | dark]
+theme_mode: light # [light | dark]
 
 # The CDN endpoint for media resources.
 # Notice that once it is assigned, the CDN url
@@ -91,11 +91,11 @@ theme_mode: dark # [light | dark]
 cdn:
 
 # the avatar on sidebar, support local or CORS resources
-avatar:
+avatar: "/assets/img/avatar.png"
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
-social_preview_image: # string, local or CORS resources
+social_preview_image: "/assets/img/avatar.png" # string, local or CORS resources
 
 # boolean type, the global switch for TOC in posts.
 toc: true
@@ -131,9 +131,9 @@ assets:
     env: # [development | production]
 
 pwa:
-  enabled: true # The option for PWA feature (installable)
+  enabled: false # The option for PWA feature (installable)
   cache:
-    enabled: true # The option for PWA offline cache
+    enabled: false # The option for PWA offline cache
     # Paths defined here will be excluded from the PWA cache.
     # Usually its value is the `baseurl` of another website that
     # shares the same domain name as the current website.
