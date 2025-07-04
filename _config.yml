@@ -1,0 +1,14 @@
+title: Test Title
+author: Test Author
+email: junpark4395@gmail.com
+description: > # This will populate your site meta description (for Google search results)
+  A simple blog to share tech insights and daily life.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://sakusi4.github.io"
+
+theme: minima
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
