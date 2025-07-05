@@ -6,7 +6,7 @@ description: > # This will populate your site meta description (for Google searc
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://sakusi4.github.io"
 
-theme: minima
+# theme: minima
 
 markdown: kramdown
 kramdown:
