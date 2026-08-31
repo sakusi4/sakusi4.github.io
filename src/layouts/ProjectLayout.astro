@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import { SITE } from '../lib/site';
+import { formatDate, type Project } from '../lib/content';
+import '../styles/prose.css';
+
+interface Props {
+    project: Project;
+}
+
+const { project } = Astro.props;
+const { title, date, summary, client, role, period, stack, results, liveUrl, repoUrl, cover } =
+    project.data;
+
+const facts = [
+    client && { label: 'Client', value: client },
+    role && { label: 'Role', value: role },
+    { label: period ? 'Period' : 'Date', value: period ?? formatDate(date) },
+    stack.length > 0 && { label: 'Stack', value: stack.join(', ') },
+].filter(Boolean) as { label: string; value: string }[];
+
+const linkFacts = [
+    liveUrl && { label: 'Live', url: liveUrl },
+    repoUrl && { label: 'Source', url: repoUrl },
+].filter(Boolean) as { label: string; url: string }[];
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: title,
+    description: summary,
+    dateCreated: date.toISOString(),
+    creator: { '@type': 'Person', name: SITE.name, url: SITE.url },
+    url: new URL(Astro.url.pathname, Astro.site).href,
+};
+---
+
+<BaseLayout
+    title={title}
+    description={summary}
+    ogType="article"
+    publishedDate={date}
+    ogImage={cover?.src}
+    jsonLd={jsonLd}
+>
+    <article class="container container--narrow">
+        <a href="/projects/" class="back">← Projects</a>
+
+        <h1 class="page-title">{title}</h1>
+        <p class="lede">{summary}</p>
+
+        <dl class="facts">
+            {facts.map((fact) => (<><dt>{fact.label}</dt><dd>{fact.value}</dd></>))}
+            {
+                linkFacts.map((fact) => (
+                    <>
+                        <dt>{fact.label}</dt>
+                        <dd>
+                            <a href={fact.url} rel="noopener" target="_blank">
+                                {new URL(fact.url).hostname}
+                            </a>
+                        </dd>
+                    </>
+                ))
+            }
+        </dl>
+
+        {
+            cover && (
+                <Image
+                    class="cover"
+                    src={cover}
+                    alt=""
+                    width={1200}
+                    height={750}
+                    loading="eager"
+                />
+            )
+        }
+
+        <div class="prose">
+            <slot />
+            {
+                results.length > 0 && (
+                    <>
+                        <h2>Outcome</h2>
+                        <ul>
+                            {results.map((result) => (
+                                <li>{result}</li>
+                            ))}
+                        </ul>
+                    </>
+                )
+            }
+        </div>
+    </article>
+</BaseLayout>

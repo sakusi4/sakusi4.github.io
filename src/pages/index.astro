@@ -1,283 +1,82 @@
 ---
-const allPosts = await Astro.glob("./posts/**/*.md");
-allPosts.sort(
-  (a, b) =>
-    new Date(b.frontmatter.date).valueOf() -
-    new Date(a.frontmatter.date).valueOf(),
-);
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EntryRow from '../components/EntryRow.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import { SITE, socialLinks } from '../lib/site';
+import { getEntries, getProjects } from '../lib/content';
 
-// Get unique categories
-const categories = [
-  ...new Set(allPosts.map((p) => p.frontmatter.category).filter(Boolean)),
-];
+const projects = (await getProjects()).slice(0, 4);
+const posts = (await getEntries('blog')).slice(0, 4);
+const journal = (await getEntries('journal')).slice(0, 2);
+const links = socialLinks();
 
-// Calculate reading time (words / 200 wpm)
-function getReadingTime(content: string): number {
-  const words = content.split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 200));
-}
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: SITE.name,
+    url: SITE.url,
+    description: SITE.description,
+    address: { '@type': 'PostalAddress', addressLocality: SITE.location },
+    ...(SITE.email ? { email: SITE.email } : {}),
+};
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jun's Blog</title>
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-        margin: 0;
-        padding: 60px 20px;
-        background: #fafafa;
-        color: #111;
-      }
+<BaseLayout title={SITE.name} jsonLd={jsonLd}>
+    <div class="container container--narrow">
+        <section class="intro">
+            <p>{SITE.intro}</p>
+            <p class="intro__contact">
+                {SITE.email && <a href={`mailto:${SITE.email}`}>{SITE.email}</a>}
+                {
+                    links.map((link) => (
+                        <a href={link.url} rel="me noopener" target="_blank">
+                            {link.name}
+                        </a>
+                    ))
+                }
+            </p>
+        </section>
 
-      .wrapper {
-        max-width: 900px;
-        margin: 0 auto;
-      }
-
-      h1 {
-        text-align: center;
-        font-size: 1.3rem;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-        margin-bottom: 40px;
-        color: #333;
-      }
-
-      h1 span {
-        color: #4f46e5;
-      }
-
-      /* Filter */
-      .filter-bar {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-      }
-
-      .filter-btn {
-        padding: 6px 14px;
-        border: 1px solid #ddd;
-        background: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.85rem;
-        transition: all 0.15s;
-      }
-
-      .filter-btn:hover {
-        border-color: #999;
-      }
-      .filter-btn.active {
-        background: #111;
-        color: #fff;
-        border-color: #111;
-      }
-
-      /* Post List */
-      .post-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      .post-item {
-        padding: 20px 0;
-        border-bottom: 1px solid #e5e5e5;
-        transition: background 0.15s;
-      }
-
-      .post-item:hover {
-        background: #f5f5f5;
-        margin: 0 -12px;
-        padding: 20px 12px;
-      }
-
-      .post-header {
-        display: flex;
-        align-items: baseline;
-        gap: 12px;
-        margin-bottom: 6px;
-      }
-
-      .post-meta {
-        font-size: 0.85rem;
-        color: #888;
-        display: flex;
-        gap: 8px;
-      }
-
-      .post-category {
-        background: #f0f0f0;
-        padding: 2px 8px;
-        border-radius: 3px;
-        font-size: 0.75rem;
-        color: #666;
-      }
-
-      .post-title {
-        font-size: 1.1rem;
-        font-weight: 500;
-        margin: 0;
-      }
-
-      .post-title a {
-        color: #111;
-        text-decoration: none;
-      }
-
-      .post-title a:hover {
-        color: #4f46e5;
-      }
-
-      .post-desc {
-        font-size: 0.9rem;
-        color: #666;
-        margin: 8px 0 0 0;
-        line-height: 1.5;
-      }
-
-      .reading-time {
-        font-size: 0.8rem;
-        color: #aaa;
-      }
-
-      /* Pagination */
-      .pagination {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        margin-top: 30px;
-      }
-
-      .page-btn {
-        padding: 6px 12px;
-        border: 1px solid #ddd;
-        background: #fff;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.85rem;
-      }
-
-      .page-btn:hover {
-        border-color: #999;
-      }
-      .page-btn.active {
-        background: #111;
-        color: #fff;
-        border-color: #111;
-      }
-
-      .hidden {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrapper">
-      <!-- <h1>Jun<span>'</span>s Blog</h1> -->
-
-      <!-- Category Filter -->
-      <div class="filter-bar">
-        <button class="filter-btn active" data-category="all">All</button>
         {
-          categories.map((cat) => (
-            <button class="filter-btn" data-category={cat}>
-              {cat}
-            </button>
-          ))
+            projects.length > 0 && (
+                <section class="group">
+                    <h2 class="group__head">Projects</h2>
+                    <ul class="rows">
+                        {projects.map((project) => (
+                            <ProjectRow project={project} />
+                        ))}
+                    </ul>
+                    <a class="more" href="/projects/">All projects</a>
+                </section>
+            )
         }
-      </div>
 
-      <!-- Post List -->
-      <ul class="post-list" id="post-list">
         {
-          allPosts.map((post) => (
-            <li
-              class="post-item"
-              data-category={post.frontmatter.category || ""}
-            >
-              <div class="post-header">
-                <div class="post-meta">
-                  <span>{post.frontmatter.date}</span>
-                  {post.frontmatter.category && (
-                    <span class="post-category">
-                      {post.frontmatter.category}
-                    </span>
-                  )}
-                  <span class="reading-time">
-                    {getReadingTime(post.rawContent())} min read
-                  </span>
-                </div>
-              </div>
-              <h3 class="post-title">
-                <a href={post.url}>{post.frontmatter.title}</a>
-              </h3>
-              {post.frontmatter.description && (
-                <p class="post-desc">{post.frontmatter.description}</p>
-              )}
-            </li>
-          ))
+            posts.length > 0 && (
+                <section class="group">
+                    <h2 class="group__head">Writing</h2>
+                    <ul class="rows">
+                        {posts.map((entry) => (
+                            <EntryRow entry={entry} tagBase="/blog/tag/" />
+                        ))}
+                    </ul>
+                    <a class="more" href="/blog/">All posts</a>
+                </section>
+            )
         }
-      </ul>
 
-      <!-- Pagination -->
-      <div class="pagination" id="pagination"></div>
+        {
+            journal.length > 0 && (
+                <section class="group">
+                    <h2 class="group__head">Journal</h2>
+                    <ul class="rows">
+                        {journal.map((entry) => (
+                            <EntryRow entry={entry} />
+                        ))}
+                    </ul>
+                    <a class="more" href="/journal/">All entries</a>
+                </section>
+            )
+        }
     </div>
-
-    <script>
-      const POSTS_PER_PAGE = 10;
-      let currentPage = 1;
-      let currentCategory = "all";
-
-      const items = Array.from(
-        document.querySelectorAll("#post-list .post-item"),
-      );
-      const filterBtns = document.querySelectorAll(".filter-btn");
-      const pagination = document.getElementById("pagination");
-
-      function filterAndPaginate() {
-        const filtered = items.filter((item) => {
-          if (currentCategory === "all") return true;
-          return item.dataset.category === currentCategory;
-        });
-
-        items.forEach((r) => r.classList.add("hidden"));
-
-        const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE) || 1;
-        if (currentPage > totalPages) currentPage = totalPages;
-
-        const start = (currentPage - 1) * POSTS_PER_PAGE;
-        const end = start + POSTS_PER_PAGE;
-        filtered.slice(start, end).forEach((r) => r.classList.remove("hidden"));
-
-        pagination.innerHTML = "";
-        for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement("button");
-          btn.className = "page-btn" + (i === currentPage ? " active" : "");
-          btn.textContent = i;
-          btn.onclick = () => {
-            currentPage = i;
-            filterAndPaginate();
-          };
-          pagination.appendChild(btn);
-        }
-      }
-
-      filterBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          filterBtns.forEach((b) => b.classList.remove("active"));
-          btn.classList.add("active");
-          currentCategory = btn.dataset.category;
-          currentPage = 1;
-          filterAndPaginate();
-        });
-      });
-
-      filterAndPaginate();
-    </script>
-  </body>
-</html>
+</BaseLayout>

@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout
+    title="Projects"
+    description="Things I've built — for clients and for myself."
+>
+    <div class="container container--narrow">
+        <h1 class="page-title">Projects</h1>
+        {
+            projects.length > 0 ? (
+                <ul class="rows">
+                    {projects.map((project) => (
+                        <ProjectRow project={project} />
+                    ))}
+                </ul>
+            ) : (
+                <p class="empty">
+                    <code>src/content/projects/</code> 에 첫 프로젝트를 추가하세요.
+                </p>
+            )
+        }
+    </div>
+</BaseLayout>

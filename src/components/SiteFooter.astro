@@ -1,0 +1,23 @@
+---
+import { SITE, socialLinks } from '../lib/site';
+
+const links = socialLinks();
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+    <div class="container container--narrow site-footer__inner">
+        <p>
+            {SITE.email && <a href={`mailto:${SITE.email}`}>{SITE.email}</a>}
+            {
+                links.map((link) => (
+                    <a href={link.url} rel="me noopener" target="_blank">
+                        {link.name}
+                    </a>
+                ))
+            }
+            <a href="/rss.xml">RSS</a>
+        </p>
+        <p class="site-footer__meta">© {year} {SITE.name}</p>
+    </div>
+</footer>

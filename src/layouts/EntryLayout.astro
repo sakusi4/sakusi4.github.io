@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from './BaseLayout.astro';
+import Disqus from '../components/Disqus.astro';
+import { SITE } from '../lib/site';
+import {
+    formatDate,
+    getEntries,
+    getReadingTime,
+    getRelated,
+    tagSlug,
+    type Entry,
+} from '../lib/content';
+import '../styles/prose.css';
+
+interface Props {
+    entry: Entry;
+}
+
+const { entry } = Astro.props;
+const { title, date, description, tags, cover, disqusId } = entry.data;
+const collection = entry.collection;
+
+const related = getRelated(await getEntries(collection), entry);
+const tagBase = collection === 'blog' ? '/blog/tag/' : undefined;
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    datePublished: date.toISOString(),
+    description: description || undefined,
+    author: { '@type': 'Person', name: SITE.name, url: SITE.url },
+    mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).href,
+};
+---
+
+<BaseLayout
+    title={title}
+    description={description}
+    ogType="article"
+    publishedDate={date}
+    ogImage={cover?.src}
+    jsonLd={jsonLd}
+>
+    <article class="container container--narrow">
+        <a href={`/${collection}/`} class="back"
+            >← {collection === 'blog' ? 'Blog' : 'Journal'}</a
+        >
+
+        <h1 class="page-title">{title}</h1>
+        <p class="row__meta">
+            <time datetime={date.toISOString()}>{formatDate(date)}</time>
+            <span>{getReadingTime(entry.body)} min</span>
+            {
+                tagBase &&
+                    tags.map((tag) => (
+                        <a href={`${tagBase}${tagSlug(tag)}/`}>{tag}</a>
+                    ))
+            }
+        </p>
+
+        {
+            cover && (
+                <Image class="cover" src={cover} alt="" width={1200} height={630} loading="eager" />
+            )
+        }
+
+        <div class="prose">
+            <slot />
+        </div>
+
+        {
+            related.length > 0 && (
+                <nav class="related">
+                    <h2>More</h2>
+                    <ul>
+                        {related.map((item) => (
+                            <li>
+                                <a href={`/${item.collection}/${item.id}/`}>
+                                    {item.data.title}
+                                </a>
+                                <time datetime={item.data.date.toISOString()}>
+                                    {formatDate(item.data.date)}
+                                </time>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
+            )
+        }
+
+        <Disqus identifier={disqusId ?? `${collection}/${entry.id}`} />
+    </article>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+interface Props {
+    /** 스레드 식별자. 한번 정하면 절대 바꾸면 안 된다 — 바꾸면 기존 댓글이 끊긴다. */
+    identifier: string;
+}
+
+const { identifier } = Astro.props;
+const pageUrl = Astro.url.href;
+---
+
+<section class="comments">
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>
+        Please enable JavaScript to view the
+        <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+    </noscript>
+</section>
+
+<script is:inline define:vars={{ pageUrl, identifier }}>
+    var disqus_config = function () {
+        this.page.url = pageUrl;
+        this.page.identifier = identifier;
+    };
+    (function () {
+        var d = document,
+            s = d.createElement("script");
+        s.src = "https://junpark.disqus.com/embed.js";
+        s.setAttribute("data-timestamp", +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>

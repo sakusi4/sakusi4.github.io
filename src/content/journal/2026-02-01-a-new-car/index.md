@@ -1,10 +1,11 @@
 ---
-title: "[Life] 2026-02-01"
+title: "A new car, and the trunk that fits my bike"
 date: "2026-02-01"
-category: "Life"
-description: ""
-tags: ["Life"]
-layout: ../../../layouts/BlogPostLayout.astro
+description: "Saying goodbye to a 140,000 km buddy, and finding one that fits a bike and Al Qudra weekends."
+tags: ["dubai", "cycling"]
+# 기존 /posts/Life-2026-02-01/ 에 달린 Disqus 스레드를 유지하기 위한 고정 식별자.
+# 새 글에는 넣지 말 것 — 기본값(슬러그)이 쓰인다.
+disqusId: "[Life] 2026-02-01"
 ---
 
 Hi.

@@ -1,0 +1,22 @@
+---
+import { render } from 'astro:content';
+import EntryLayout from '../../layouts/EntryLayout.astro';
+import { getEntries, type Entry } from '../../lib/content';
+
+export async function getStaticPaths() {
+    // getEntries가 draft를 걸러낸다. getCollection을 직접 쓰면 draft가 빌드에 나간다.
+    const entries = await getEntries('journal');
+    return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+    entry: Entry;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<EntryLayout entry={entry}>
+    <Content />
+</EntryLayout>

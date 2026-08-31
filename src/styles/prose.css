@@ -1,0 +1,98 @@
+/* 마크다운이 렌더한 HTML. scoped 스타일이 닿지 않으므로 전역 파일로 둔다. */
+
+.prose {
+    font-size: 1rem;
+}
+
+.prose h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 40px 0 16px;
+}
+
+.prose h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 32px 0 12px;
+}
+
+.prose p,
+.prose ul,
+.prose ol {
+    margin-bottom: 1.5em;
+}
+
+.prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    word-break: break-all;
+}
+
+.prose img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    margin: 24px 0;
+}
+
+.prose iframe {
+    max-width: 100%;
+    border: 0;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.prose pre {
+    background: var(--chip);
+    padding: 16px;
+    overflow-x: auto;
+    border-radius: 6px;
+    font-size: 0.9em;
+}
+
+.prose code {
+    background: var(--chip);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.prose pre code {
+    background: none;
+    padding: 0;
+}
+
+.prose blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 24px 0;
+    padding-left: 20px;
+    color: #555;
+    font-style: italic;
+}
+
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-bottom: 1.5em;
+}
+
+.prose th,
+.prose td {
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    text-align: left;
+}
+
+@media (max-width: 600px) {
+    .prose h2 {
+        font-size: 1.1rem;
+    }
+
+    .prose pre {
+        padding: 12px;
+        font-size: 0.8em;
+    }
+}

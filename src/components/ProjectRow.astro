@@ -1,0 +1,22 @@
+---
+import { formatDate, type Project } from '../lib/content';
+
+interface Props {
+    project: Project;
+}
+
+const { project } = Astro.props;
+const { title, date, summary, client, period, stack } = project.data;
+---
+
+<li class="row">
+    <p class="row__meta">
+        {client && <span>{client}</span>}
+        <span>{period ?? formatDate(date)}</span>
+        {stack.length > 0 && <span>{stack.join(' · ')}</span>}
+    </p>
+    <h2 class="row__title">
+        <a href={`/projects/${project.id}/`}>{title}</a>
+    </h2>
+    <p class="row__desc">{summary}</p>
+</li>
