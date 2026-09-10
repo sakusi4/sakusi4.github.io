@@ -1,4 +1,4 @@
-# junpark.me
+# sakusi4.github.io
 
 [Chirping Astro](https://github.com/kannansuresh/chirping-astro) 테마 위에 올린 개인 블로그.
 
@@ -45,5 +45,6 @@ tags: [astro, notes]
 
 ## 배포
 
-GitHub Pages. `main`에 push하면 `.github/workflows/deploy.yml`이 빌드해서 배포한다.
-레포 Settings → Pages → Source는 **GitHub Actions**, Custom domain은 `junpark.me`.
+GitHub Pages 사용자 사이트. 레포 이름이 `sakusi4.github.io`여야 루트에서 서빙된다.
+`main`에 push하면 `.github/workflows/deploy.yml`이 빌드해서 배포한다.
+레포 Settings → Pages → Source는 **GitHub Actions**.
