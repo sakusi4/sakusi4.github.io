@@ -1,5 +1,5 @@
 import process from 'node:process';
-import avatarImg from './assets/images/site/avatar.svg';
+import avatarImg from './assets/images/site/avatar.png';
 import ogDefaultImg from './assets/images/site/og-default.svg';
 import type { GiscusConfig, NavItem, SiteConfig, SocialLink } from './types/config';
 
@@ -61,9 +61,9 @@ export const SITE: SiteConfig = {
   author: {
     name: 'Jun Park',
     url: GITHUB_HANDLE ? `https://github.com/${GITHUB_HANDLE}` : undefined,
-    /** 사진을 쓰려면 src/assets/images/site/avatar.svg 를 바꾸고 `avatar: avatarImg` 로. 비우면 이니셜 원. */
-    avatar: undefined,
-    bio: 'Software engineer in Dubai. Cycling on weekends.',
+    /** src/assets/images/site/avatar.png. 비우면 이니셜 원. */
+    avatar: avatarImg,
+    bio: 'Software engineer in Dubai',
   },
   /** Default OG image. */
   defaultOgImage: ogDefaultImg.src,

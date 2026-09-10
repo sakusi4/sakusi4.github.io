@@ -40,7 +40,7 @@ tags: [astro, notes]
 
 - 사이트 제목, 소개, 아바타, 메뉴: `src/config.ts`
 - 소셜 링크: `.env` 의 `PUBLIC_GITHUB_HANDLE`, `PUBLIC_TWITTER_HANDLE`, `PUBLIC_CONTACT_EMAIL` (`.env.example` 참고)
-- 아바타 사진: `src/assets/images/site/avatar.svg` 교체 후 `config.ts`에서 `avatar: avatarImg`
+- 아바타 사진: `src/assets/images/site/avatar.png` 교체. 원형으로 잘리니 정사각형에 가까운 사진이 좋다.
 - 테마 색: `src/styles/global.css` 의 daisyUI 토큰
 
 ## 배포
