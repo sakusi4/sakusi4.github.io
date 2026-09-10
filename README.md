@@ -45,4 +45,5 @@ tags: [astro, notes]
 
 ## 배포
 
-Cloudflare Pages 기준: 빌드 명령 `bun run build`, 출력 디렉터리 `dist`, Node 22 이상.
+GitHub Pages. `main`에 push하면 `.github/workflows/deploy.yml`이 빌드해서 배포한다.
+레포 Settings → Pages → Source는 **GitHub Actions**, Custom domain은 `junpark.me`.
