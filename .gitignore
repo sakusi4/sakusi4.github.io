@@ -1,5 +1,8 @@
 # build output
 dist/
+.output/
+.vercel/
+.netlify/
 
 # generated types
 .astro/
@@ -15,10 +18,23 @@ pnpm-debug.log*
 
 # environment variables
 .env
+.env.local
 .env.production
+.env.development
 
-# macOS-specific files
-.DS_Store
-
-# jetbrains setting folder
+# editor
 .idea/
+
+# os
+.DS_Store
+Thumbs.db
+
+# bun
+bun.lockb
+.bun-cache/
+
+# pagefind cache
+pagefind/
+
+# misc
+*.log

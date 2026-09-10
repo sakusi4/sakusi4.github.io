@@ -1,55 +1,129 @@
-import { defineCollection, z, type SchemaContext } from 'astro:content';
+/**
+ * Content Collections (Astro v7 loader API).
+ *
+ * Folder convention: `src/content/<collection>/<locale>/**`
+ *  - posts/en/**  -> EN posts
+ *  - posts/fr/**  -> FR posts
+ *  - pages/en/**  -> EN static pages (about, etc.)
+ *  - pages/fr/**  -> FR static pages
+ *
+ * The locale is derived from the file path so authors do not need to set it
+ * manually (but they may override it in frontmatter).
+ */
+
 import { glob } from 'astro/loaders';
+import { defineCollection, type SchemaContext } from 'astro:content';
+import { z } from 'zod';
+
+import { SITE } from './config';
+
+const localeEnum = z.enum(SITE.locales as unknown as [string, ...string[]]);
 
 /**
- * 폴더 이름을 그대로 URL 슬러그로 쓴다.
- * 기본 generateId는 소문자로 슬러그화해서 대소문자가 있는 기존 URL을 깨뜨린다.
+ * Build the post / page frontmatter schema.
+ *
+ * `heroImage` accepts THREE shapes:
+ *   1. An imported asset via `image()` — a path RELATIVE TO THE
+ *      MARKDOWN FILE pointing into `src/assets/...`. Astro resolves
+ *      it through its image pipeline (WebP, responsive `srcset`,
+ *      width/height inferred). This is the recommended option.
+ *   2. A public path (e.g. `/images/foo.jpg`) — copied as-is, NOT
+ *      optimized.
+ *   3. An external URL (https://…) — optimized at build if the host
+ *      is allow-listed in `image.remotePatterns` in `astro.config.mjs`.
  */
-const folderId = ({ entry }: { entry: string }) =>
-    entry.replace(/\.md$/, '').replace(/\/index$/, '');
+const baseFrontmatter = ({ image }: SchemaContext) =>
+  z.object({
+    title: z.string().min(1).max(140),
+    /** 선택. 비우면 사이트 설명이 meta에 쓰인다. */
+    description: z.string().max(280).default(''),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    tags: z.array(z.string()).default([]),
+    categories: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+    heroImage: z.union([image(), z.string()]).optional(),
+    /** Optional alt-text for the hero/featured image. */
+    heroImageAlt: z.string().optional(),
+    /** Per-post override of SITE.showFeaturedImages (cards + hero). */
+    showFeaturedImage: z.boolean().optional(),
+    /** Per-post override of SITE.dynamicPostCardHeight on listing cards. */
+    dynamicPostCardHeight: z.boolean().optional(),
+    canonicalURL: z.url().optional(),
+    comments: z.boolean().optional(),
+    /**
+     * Disqus 스레드 식별자. 기본값은 `posts/<slug>`.
+     * 예전 식별자로 달린 댓글이 있는 글만 여기에 고정한다.
+     */
+    disqusId: z.string().optional(),
+    toc: z.boolean().default(true),
+    /** Pin to top of listings. */
+    pinned: z.boolean().default(false),
+    /**
+     * Opt in to LaTeX math rendering (KaTeX). When `true`, the layout
+     * loads `katex.min.css` only on this page so the stylesheet stays
+     * off posts/pages that don't use math.
+     */
+    math: z.boolean().default(false),
+    /**
+     * Opt in to Mermaid diagram rendering. When `true`, the layout
+     * loads the Mermaid client library and initializes diagrams.
+     * Defaults to `false` to keep the heavy Mermaid library off posts/pages
+     * that don't use it.
+     */
+    mermaid: z.boolean().default(false),
+    /** Optional locale override; otherwise inferred from path. */
+    lang: localeEnum.optional(),
+    /**
+     * Maps translated variants together. Posts that share a translationKey
+     * across locales are considered translations of each other and the
+     * language switcher will jump between them on the same article.
+     *
+     * If omitted, falls back to the file slug (relative to the locale folder).
+     */
+    translationKey: z.string().optional(),
+    /**
+     * Unlisted posts/pages are NOT shown in any listing (home, archives,
+     * tags, categories, RSS, sitemap) but remain accessible to anyone who
+     * knows the direct URL.
+     *
+     * Use `unlistedHideFromSeo: true` (the default when `unlisted: true`)
+     * to also emit `<meta name="robots" content="noindex, nofollow">` so
+     * search engines won't index or follow links on the page.
+     */
+    unlisted: z.boolean().default(false),
+    /**
+     * When `true`, adds `<meta name="robots" content="noindex, nofollow">`
+     * to the page. Defaults to `true` whenever `unlisted: true`; can be
+     * set independently to hide a listed post from search engines, or to
+     * keep an unlisted post indexable (e.g. for sharing via a canonical URL
+     * you control).
+     */
+    unlistedHideFromSeo: z.boolean().optional(),
+  });
 
-const loadFrom = (dir: string) =>
-    glob({ pattern: '**/*.md', base: `./src/content/${dir}`, generateId: folderId });
+export type PostFrontmatter = z.infer<ReturnType<typeof baseFrontmatter>>;
 
-/** blog / journal 공통 필드. 성격만 다르고 형태는 같다. */
-const entrySchema = ({ image }: SchemaContext) =>
-    z.object({
-        title: z.string(),
-        date: z.coerce.date(),
-        description: z.string().default(''),
-        tags: z.array(z.string()).default([]),
-        /** 카드 썸네일 겸 og:image. 없으면 사이트 기본 이미지를 쓴다. */
-        cover: image().optional(),
-        draft: z.boolean().default(false),
-        /**
-         * Disqus 스레드 식별자. 기본값은 슬러그.
-         * 이미 댓글이 달린 글은 예전 식별자를 여기에 고정해야 스레드가 유지된다.
-         */
-        disqusId: z.string().optional(),
-    });
+const posts = defineCollection({
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/posts',
+  }),
+  schema: baseFrontmatter,
+});
 
-/** 클라이언트 일과 개인 프로젝트를 함께 담는다. 사실 정보만 필드로 둔다. */
-const projectSchema = ({ image }: SchemaContext) =>
-    z.object({
-        title: z.string(),
-        date: z.coerce.date(),
-        summary: z.string(),
-        /** 클라이언트 일일 때만. 개인 프로젝트는 비워둔다. */
-        client: z.string().optional(),
-        role: z.string().optional(),
-        period: z.string().optional(),
-        stack: z.array(z.string()).default([]),
-        /** 선택. 실제로 측정된 것만. 없으면 비워두는 게 낫다. */
-        results: z.array(z.string()).default([]),
-        liveUrl: z.string().url().optional(),
-        repoUrl: z.string().url().optional(),
-        cover: image().optional(),
-        featured: z.boolean().default(false),
-        draft: z.boolean().default(false),
-    });
+const pages = defineCollection({
+  loader: glob({
+    pattern: '**/*.{md,mdx}',
+    base: './src/content/pages',
+  }),
+  schema: (ctx) =>
+    baseFrontmatter(ctx)
+      .partial({ pubDate: true })
+      .extend({
+        /** Pages don't paginate or appear in archives. */
+        showInNav: z.boolean().default(false),
+      }),
+});
 
-export const collections = {
-    projects: defineCollection({ loader: loadFrom('projects'), schema: projectSchema }),
-    blog: defineCollection({ loader: loadFrom('blog'), schema: entrySchema }),
-    journal: defineCollection({ loader: loadFrom('journal'), schema: entrySchema }),
-};
+export const collections = { posts, pages };
